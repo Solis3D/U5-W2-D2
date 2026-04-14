@@ -1,9 +1,9 @@
 package solis3d.u5w2d2.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import solis3d.u5w2d2.entities.BlogPost;
+import solis3d.u5w2d2.exceptions.NotFoundException;
 import solis3d.u5w2d2.payloads.NewBlogPostPayload;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class BlogPostsService {
             if (blogPost.getId() == blogPostId) {trovato = blogPost;}
         }
 
-        if (trovato == null) {throw new EntityNotFoundException("BlogPost con id " + blogPostId + " non trovato!");}
+        if (trovato == null) {throw new NotFoundException(blogPostId);}
         return trovato;
     }
 
@@ -48,7 +48,8 @@ public class BlogPostsService {
                 trovato.setTempoDiLettura(body.getTempoDiLettura());
             }
         }
-        if (trovato == null) {throw new EntityNotFoundException("BlogPost con id " + blogPostId + " non trovato!");}
+        if (trovato == null) {throw new NotFoundException(blogPostId);
+        }
         return trovato;
     }
 
@@ -59,7 +60,7 @@ public class BlogPostsService {
             if(blogPost.getId() == blogPostId){trovato = blogPost;}
         }
 
-        if(trovato == null) throw new EntityNotFoundException("BlogPost con id " + blogPostId + " non trovato!");
+        if(trovato == null) throw new NotFoundException(blogPostId);
         this.blogPostsDB.remove(trovato);
     }
 }
