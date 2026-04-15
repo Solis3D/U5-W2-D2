@@ -1,5 +1,6 @@
 package solis3d.u5w2d2.controllers;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import solis3d.u5w2d2.entities.BlogPost;
@@ -18,8 +19,12 @@ public class BlogPostsController {
     }
 
     @GetMapping
-    public List<BlogPost> findAll() {
-        return this.blogPostsService.findAll();
+    public Page<BlogPost> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "titolo") String sortBy
+    ) {
+        return this.blogPostsService.findAll(page, size, sortBy);
     }
 
     @PostMapping
@@ -39,6 +44,7 @@ public class BlogPostsController {
     }
 
     @DeleteMapping("/{blogPostId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable long blogPostId) {
         this.blogPostsService.findByIdAndDelete(blogPostId);
     }

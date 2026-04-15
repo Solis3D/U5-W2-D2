@@ -38,7 +38,8 @@ public class AuthorsController {
         return this.authorService.findByIdAndUpdate(authorId, body);
     }
 
-    @DeleteMapping("/{authorId]")
+    @DeleteMapping("/{authorId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable long authorId) {
         this.authorService.findByIdAndDelete(authorId);
     }
