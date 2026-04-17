@@ -34,8 +34,6 @@ public class BlogPost {
     private Author author;
 
     public BlogPost(String categoria, String titolo, String contenuto, int tempoDiLettura, Author author) {
-        Random random=new Random();
-        this.id = random.nextLong(1,10000);
         this.categoria = categoria;
         this.titolo = titolo;
         this.cover = "https://picsum.photos/200/300";

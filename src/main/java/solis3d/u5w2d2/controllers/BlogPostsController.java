@@ -2,8 +2,12 @@ package solis3d.u5w2d2.controllers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import solis3d.u5w2d2.entities.BlogPost;
+import solis3d.u5w2d2.exceptions.ValidationException;
+import solis3d.u5w2d2.payloads.BlogPostDTO;
 import solis3d.u5w2d2.payloads.NewBlogPostPayload;
 import solis3d.u5w2d2.services.BlogPostsService;
 
@@ -29,7 +33,14 @@ public class BlogPostsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogPost createBlogPost(@RequestBody NewBlogPostPayload body) {
+    public BlogPost createBlogPost(@RequestBody @Validated BlogPostDTO body, BindingResult validationResult) {
+
+        if (validationResult.hasErrors()) {
+            List<String> errors = validationResult.getFieldErrors().stream().map(error -> error.getDefaultMessage()).toList();
+
+            throw new ValidationException(errors);
+        }
+
         return this.blogPostsService.saveBlogPost(body);
     }
 

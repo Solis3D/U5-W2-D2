@@ -35,7 +35,5 @@ public class Author {
         this.cognome = cognome;
         this.email = email;
         this.dataDiNascita = dataDiNascita;
-        Random random = new Random();
-        this.id = random.nextLong(1,10000);
         this.avatar = "https://ui-avatars.com/api/?name=" + nome + "+" + cognome;    }
 }

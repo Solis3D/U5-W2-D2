@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import solis3d.u5w2d2.entities.Author;
 import solis3d.u5w2d2.entities.BlogPost;
 import solis3d.u5w2d2.exceptions.NotFoundException;
+import solis3d.u5w2d2.payloads.BlogPostDTO;
 import solis3d.u5w2d2.payloads.NewBlogPostPayload;
 import solis3d.u5w2d2.repositories.AuthorsRepository;
 import solis3d.u5w2d2.repositories.BlogPostsRepository;
@@ -25,11 +26,11 @@ public class BlogPostsService {
         this.authorsRepository = authorsRepository;
     }
 
-    public BlogPost saveBlogPost(NewBlogPostPayload body) {
+    public BlogPost saveBlogPost(BlogPostDTO body) {
 
-        Author author = this.authorsRepository.findById(body.getAuthorId()).orElseThrow(() -> new NotFoundException(body.getAuthorId()));
+        Author author = this.authorsRepository.findById(body.authorId()).orElseThrow(() -> new NotFoundException(body.authorId()));
 
-        BlogPost blogPost = new BlogPost(body.getCategoria(), body.getTitolo(), body.getContenuto(), body.getTempoDiLettura(),  author);
+        BlogPost blogPost = new BlogPost(body.categoria(), body.titolo(), body.contenuto(), body.tempoDiLettura(),  author);
 
         BlogPost savedBlogPost = blogPostsRepository.save(blogPost);
 

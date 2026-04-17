@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import solis3d.u5w2d2.payloads.ErrorsPayload;
+import solis3d.u5w2d2.payloads.ErrorsDTO;
+import solis3d.u5w2d2.payloads.ErrorsWithListDTO;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
@@ -14,20 +14,26 @@ public class ErrorsHandler {
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorsPayload handleBadRequest(BadRequestException ex) {
-        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    public ErrorsDTO handleBadRequest(BadRequestException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsWithListDTO handleValidationErrors(ValidationException ex) {
+        return new ErrorsWithListDTO(ex.getMessage(), LocalDateTime.now(),ex.getErrors());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorsPayload handleNotFound(NotFoundException ex) {
-        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    public ErrorsDTO handleNotFound(NotFoundException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorsPayload handleGenericError(Exception ex) {
+    public ErrorsDTO handleGenericError(Exception ex) {
         ex.printStackTrace();
-        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+        return new ErrorsDTO("Errore interno del server!", LocalDateTime.now());
     }
 }
